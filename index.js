@@ -11,9 +11,6 @@ const {
 
 passport.use('kakao',
     new KakaoStrategy({ clientID, callbackURL }, (accessToken, refreshToken, profile, done) => {
-        console.log('Access', accessToken)
-        console.log('Refresh', refreshToken)
-        console.log('Profile', profile)
         done(null, profile)
     })
 )
