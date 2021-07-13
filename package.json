@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "express": "^4.17.1",
+    "node-jose": "^2.0.0",
     "nodemon": "^2.0.12",
     "passport": "^0.4.1",
     "passport-kakao": "^1.0.1"
