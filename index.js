@@ -1,11 +1,11 @@
-const express = require("express")
-const path = require('path')
-const passport = require('passport')
-const axios = require('axios')
-const KakaoStrategy = require('passport-kakao').Strategy
+const express = require("express");
+const path = require('path');
+const passport = require('passport');
+const axios = require('axios');
+const KakaoStrategy = require('passport-kakao').Strategy;
 const jose = require('node-jose');
-const fs = require('fs').promises
-const { clientID, callbackURL } = require('./secrets')
+const fs = require('fs').promises;
+const { clientID, callbackURL } = require('./secrets');
 
 // JWT public key path
 const KEY_PATH = path.join(__dirname, 'keys.json');
@@ -29,15 +29,15 @@ async function getJwt(content) {
         .final();
 }
 
-const app = express()
+const app = express();
 
 // Service static files
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Root page redirection
 app.get('/', (req, res) => {
-    res.redirect('/index.html')
-})
+    res.redirect('/index.html');
+});
 
 // Get keys
 app.get('/keys', (req, res) => {
@@ -48,35 +48,35 @@ app.get('/keys', (req, res) => {
 // Process OAuth
 passport.use('kakao',
     new KakaoStrategy({ clientID, callbackURL }, (accessToken, refreshToken, profile, done) => {
-        done(null, profile)
+        done(null, profile);
     })
-)
-app.get('/oauth/kakao/login', passport.authenticate('kakao'))
+);
+app.get('/oauth/kakao/login', passport.authenticate('kakao'));
 app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false, }), (req, res) => {
     res.redirect('/');
 });
 
 // Process logout
 app.get('/logout', (req, res) => {
-    res.send("Logout is not implemented yet!")
+    res.send("Logout is not implemented yet!");
 });
 
-// Restore keyStore if key.json exists
-(async function main() {
+async function main() {
+    // Restore key store if key.json exists. Or generate key store.
     try {
         let keyFile = await fs.readFile(KEY_PATH, 'utf-8');
-        let input = JSON.parse(keyFile);
-        keyStore = await jose.JWK.asKeyStore(input);
+        let keyJSON = JSON.parse(keyFile);
+        keyStore = await jose.JWK.asKeyStore(keyJSON);
     } catch (_) {
         await keyStore.generate('RSA', 1024, { alg: 'RS256', use: 'sig' });
-        fs.writeFile(
-            KEY_PATH,
-            JSON.stringify(keyStore.toJSON(true)),
-            'utf-8'
-        );
+        let keyJSON = keyStore.toJSON(true);
+        let keyFile = JSON.stringify(keyJSON);
+        await fs.writeFile(KEY_PATH, keyFile, 'utf-8');
     }
 
     app.listen(80, () => {
         console.log("Auth server started.");
     });
-})();
+}
+
+main();
