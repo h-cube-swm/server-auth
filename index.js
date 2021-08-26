@@ -33,11 +33,6 @@ const app = express();
 // Service static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Root page redirection
-app.get('/', (req, res) => {
-    res.redirect('/index.html');
-});
-
 // Get keys
 app.get('/keys', (req, res) => {
     const keys = keyStore.all({ use: 'sig' });
