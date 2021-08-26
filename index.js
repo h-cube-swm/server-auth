@@ -18,7 +18,7 @@ async function getJwt(content) {
     const [key] = keyStore.all({ use: 'sig' });
     const opt = { format: 'compact' };
     const payload = JSON.stringify({
-        iss: 'zetin',
+        iss: 'hcube',
         exp: Math.floor((Date.now()) / 1000) + 24 * 3600,
         iat: Math.floor(Date.now() / 1000),
         sub: 'auth',
