@@ -62,9 +62,8 @@ app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false
 
     // Redirect to requested location
     const redirect = req.cookies.redirect;
-    if (redirect && redirect.startsWith('/')) {
-        res.redirect(`https://${rootDomain}${redirect}`);
-    } else res.redirect('/');
+    if (redirect) res.redirect(redirect);
+    else res.redirect('/');
 });
 
 async function main() {
