@@ -1,7 +1,6 @@
 const express = require("express");
 const path = require('path');
 const passport = require('passport');
-const axios = require('axios');
 const KakaoStrategy = require('passport-kakao').Strategy;
 const jose = require('node-jose');
 const fs = require('fs').promises;
@@ -52,13 +51,17 @@ passport.use('kakao',
     })
 );
 app.get('/oauth/kakao/login', passport.authenticate('kakao'));
-app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false, }), (req, res) => {
-    res.redirect('/');
-});
+app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false, }), async (req, res) => {
+    // Get user information and build JWT
+    const { user } = req;
+    const jwt = await getJwt({
+        provider: 'kakao',
+        id: user.id
+    });
 
-// Process logout
-app.get('/logout', (req, res) => {
-    res.send("Logout is not implemented yet!");
+    // Convey jwt with cookie
+    res.cookie('token', jwt, { maxAge: 60 * 1000 });
+    res.redirect('/');
 });
 
 async function main() {
