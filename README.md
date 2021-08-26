@@ -46,3 +46,13 @@
 4. 이후로는 세션 키를 로컬스토리지에 저장한 후 데이터베이스와 비교하며 인증에 이용한다.
 
 이 방법이 비교적 구현이 간단하기는 하나 상기한 여러 문제들이 있어 JWT에 비해 월등히 우월하다고는 보기 힘들다. 우리는 실제로 프로덕트를 만드는 게 아니라 그 연습을 하는 것인 만큼 JWT를 공부하는 셈 치고 써 보기로 하자.
+
+## `secrets.js`
+
+```
+module.exports = {
+    clientID: 'abc.....asdf',
+    callbackURL: 'https://auth.the-form.io/oauth/kakao/callback',
+    rootDomain: 'the-form.io'
+}
+```
