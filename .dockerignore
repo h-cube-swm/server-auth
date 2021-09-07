@@ -3,3 +3,4 @@ node_modules
 keys.json
 README.md
 docker.sh
+secrets.js

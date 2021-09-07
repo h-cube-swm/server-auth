@@ -44,7 +44,7 @@ app.get('/keys', (req, res) => {
 
 // Process OAuth
 passport.use('kakao',
-    new KakaoStrategy({ clientID: CLIENT_ID, callbackUrl: CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {
+    new KakaoStrategy({ clientID: CLIENT_ID, callbackURL: CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {
         done(null, profile);
     })
 );
