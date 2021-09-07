@@ -5,7 +5,7 @@ const KakaoStrategy = require('passport-kakao').Strategy;
 const jose = require('node-jose');
 const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
-const { clientID, callbackURL, rootDomain } = require('./secrets');
+const { CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN } = process.env;
 
 // JWT public key path
 const KEY_PATH = path.join(__dirname, 'keys.json');
@@ -44,7 +44,7 @@ app.get('/keys', (req, res) => {
 
 // Process OAuth
 passport.use('kakao',
-    new KakaoStrategy({ clientID, callbackURL }, (accessToken, refreshToken, profile, done) => {
+    new KakaoStrategy({ clientID: CLIENT_ID, callbackUrl: CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {
         done(null, profile);
     })
 );
@@ -58,7 +58,7 @@ app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false
     });
 
     // Convey jwt with cookie
-    res.cookie('token', jwt, { domain: rootDomain, maxAge: 60 * 1000 });
+    res.cookie('token', jwt, { domain: ROOT_DOMAIN, maxAge: 60 * 1000 });
 
     // Redirect to requested location
     const redirect = req.cookies.redirect;
