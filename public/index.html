@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-      .kakao {
-        box-shadow: 0 7px 29px 0 rgba(100, 100, 111, 0.2);
-        width: 3rem;
-        height: 3rem;
-        font-size: 2rem;
-        background-color: #ffe812;
-        color: #000;
-        border-radius: 4px;
-        border: none;
-        font-weight: 700;
-        cursor: pointer;
-      }
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&family=Roboto:wght@300;400;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" class="style">
 
-    <title>Auth server for h-cube</title>
-  </head>
-  <body>
-    <h1>Login page for H-Cube</h1>
-    <div>
-      <button class="kakao" onclick="kakaoLogin()">K</button>
+  <title>더 폼 - 로그인</title>
+</head>
+
+<body>
+  <div class="login">
+    <div class="description">
+      <div class="title">
+        <img src="./assets/images/logo.png" alt="logo">
+        <h1>더 폼</h1>
+      </div>
+
+      <h3>모든 폼을 대신하는<br />더 폼 나는 설문조사</h3>
     </div>
-  </body>
-  <script>
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const params = Object.fromEntries(urlSearchParams.entries());
+    <button class="kakao" onclick="kakaoLogin()">카카오로 1초 만에 시작하기</button>
+  </div>
+</body>
+<script>
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
 
-    function kakaoLogin() {
-      if (params.redirect) document.cookie = `redirect=${params.redirect}`;
-      window.location.href = "/oauth/kakao/login";
-    }
-  </script>
+  function kakaoLogin() {
+    if (params.redirect) document.cookie = `redirect=${params.redirect}`;
+    window.location.href = "/oauth/kakao/login";
+  }
+</script>
+
 </html>

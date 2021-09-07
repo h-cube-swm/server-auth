@@ -1,0 +1,69 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+
+  width: 100%;
+  max-width: 25rem;
+
+  height: 70%;
+  max-height: 35rem;
+
+  border-radius: 15px;
+  border: 0;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+.title img {
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-120%, -50%);
+}
+
+h3 {
+  font-weight: 500;
+}
+
+.kakao {
+  width: 60%;
+  height: 3rem;
+  margin-top: 5rem;
+  background-color: #ffd800;
+  border: 0;
+  border-radius: 10px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.8rem;
+  color: #000;
+  cursor: pointer;
+  transition-duration: 200ms;
+}
