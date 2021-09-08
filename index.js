@@ -7,6 +7,8 @@ const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
 const { CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN } = process.env;
 
+console.log(CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN);
+
 // JWT public key path
 const KEY_PATH = path.join(__dirname, 'keys.json');
 
