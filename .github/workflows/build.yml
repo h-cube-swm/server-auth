@@ -1,12 +1,13 @@
-name: Build
+name: Build and Deploy
 on: push
+
 env:
   RELEASE_REVISION: "${{ github.sha }}"
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-  KUBE_NAMESPACE: default
+  KUBE_NAMESPACE: production
   ECR_REPOSITORY: ${{ github.event.repository.name }}
 
 jobs:
@@ -39,6 +40,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-single-buildx
       - name: Build & Push Image
+        id: build
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           RELEASE_IMAGE: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ env.RELEASE_REVISION }}
@@ -53,3 +55,11 @@ jobs:
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
           echo "::set-output name=image::${{ env.RELEASE_IMAGE }}"
+
+      - name: Deploy to Kubernetes Cluster
+        uses: kodermax/kubectl-aws-eks@master
+        env:
+          RELEASE_IMAGE: ${{ steps.build.outputs.image }}
+          KUBE_NAMESPACE: ${{ steps.kube-namespace.outputs.namespace }}
+        with:
+          args: set image deployment/auth auth=${{ env.RELEASE_IMAGE }} --record -n ${{ env.KUBE_NAMESPACE }}
