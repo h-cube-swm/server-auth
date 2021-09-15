@@ -39,6 +39,7 @@ jobs:
           key: ${{ runner.os }}-single-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-single-buildx
+
       - name: Build & Push Image
         id: build
         env:
@@ -60,6 +61,5 @@ jobs:
         uses: kodermax/kubectl-aws-eks@master
         env:
           RELEASE_IMAGE: ${{ steps.build.outputs.image }}
-          KUBE_NAMESPACE: ${{ steps.kube-namespace.outputs.namespace }}
         with:
           args: set image deployment/auth auth=${{ env.RELEASE_IMAGE }} --record -n ${{ env.KUBE_NAMESPACE }}
