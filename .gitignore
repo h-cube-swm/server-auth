@@ -2,3 +2,4 @@ docker.sh
 node_modules
 secrets.js
 keys.json
+.env
