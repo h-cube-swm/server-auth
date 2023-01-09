@@ -2,10 +2,11 @@ const express = require("express");
 const path = require('path');
 const passport = require('passport');
 const KakaoStrategy = require('passport-kakao').Strategy;
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const jose = require('node-jose');
 const fs = require('fs').promises;
 const cookieParser = require('cookie-parser');
-const { CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN } = process.env;
+const { CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
 console.log(CLIENT_ID, CALLBACK_URL, ROOT_DOMAIN);
 
@@ -56,6 +57,31 @@ app.get('/oauth/kakao/callback', passport.authenticate('kakao', { session: false
     const { user } = req;
     const jwt = await getJwt({
         provider: 'kakao',
+        id: user.id
+    });
+
+    // Convey jwt with cookie
+    res.cookie('token', jwt, { domain: ROOT_DOMAIN, maxAge: 60 * 1000 });
+
+    // Redirect to requested location
+    const redirect = req.cookies.redirect;
+    if (redirect) res.redirect(redirect);
+    else res.redirect('/');
+});
+passport.use('google',
+    new GoogleStrategy ({ clientID: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, callbackURL: GOOGLE_CALLBACK_URL }, (accessToken, refreshToken, profile, done) => {
+        done(null, profile);
+    })
+);
+app.get('/oauth/google/login', passport.authenticate('google', {
+    scope: ['email', 'profile']
+}));
+app.get('/oauth/google/callback', passport.authenticate('google', { session: false, }), async (req, res) => {
+    // Get user information and build JWT
+    const { user } = req;
+    console.log({user});
+    const jwt = await getJwt({
+        provider: 'google',
         id: user.id
     });
 

@@ -26,6 +26,7 @@
       <h3>모든 폼을 대신하는<br />더 폼 나는 설문조사</h3>
     </div>
     <button class="kakao" onclick="kakaoLogin()">카카오로 1초 만에 시작하기</button>
+    <button class="google" onclick="googleLogin()">구글로 1초 만에 시작하기</button>
   </div>
 </body>
 <script>
@@ -35,6 +36,11 @@
   function kakaoLogin() {
     if (params.redirect) document.cookie = `redirect=${params.redirect}`;
     window.location.href = "/oauth/kakao/login";
+  }
+
+  function googleLogin() {
+    if (params.redirect) document.cookie = `redirect=${params.redirect}`;
+    window.location.href = "/oauth/google/login";
   }
 </script>
 

@@ -67,3 +67,17 @@ h3 {
   cursor: pointer;
   transition-duration: 200ms;
 }
+
+.google {
+  width: 60%;
+  height: 3rem;
+  margin-top: 5rem;
+  background-color: #4285F4;
+  border: 0;
+  border-radius: 10px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.8rem;
+  color: #000;
+  cursor: pointer;
+  transition-duration: 200ms;
+}
