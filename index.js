@@ -79,7 +79,6 @@ app.get('/oauth/google/login', passport.authenticate('google', {
 app.get('/oauth/google/callback', passport.authenticate('google', { session: false, }), async (req, res) => {
     // Get user information and build JWT
     const { user } = req;
-    console.log({user});
     const jwt = await getJwt({
         provider: 'google',
         id: user.id
